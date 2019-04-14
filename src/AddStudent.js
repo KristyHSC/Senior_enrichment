@@ -19,7 +19,6 @@ class AddStudent extends Component{
   constructor (){
     super()
     this.state = {
-        id: '',
         firstName: '',
         lastName: '',
         email: '',
@@ -29,7 +28,7 @@ class AddStudent extends Component{
   }
 
   componentWillMount(){
-    if (this.props.student) {
+    if (this.props.student){
       this.setState(this.props.student)
     }
   }
@@ -63,26 +62,26 @@ class AddStudent extends Component{
     this.setState({campusId: campus.id})
   }
 
-  createHandler = event => {
+  createHandler = () => {
+    let event = window.event 
     event.preventDefault()
     const student = this.state
     this.props.addStudent(student)
   }
 
-  updateHandler = (id) => {
-    //event.preventDefault()
-    const student = this.state
-    console.log(id)
+  editHandler = (id) => {
+    let event = window.event
+    event.preventDefault()
+    const student = this.state.student
     console.log(student)
-    this.props.editStudent(id, student)
+    //this.props.editStudent(id, student)
   }
-
   
   render(){
     const {campuses} = this.props
-    const studentId = this.state.id
+    if (this.props.student){const id = this.props.student.id}
     return(
-      <form id='new-campus-form'>
+      <form id='new-campus-form' >
         <div className='input-group'>
         <input 
           className="form-control"
@@ -124,7 +123,7 @@ class AddStudent extends Component{
         </select>
         </div>
         <button onClick={this.createHandler}>Create!</button>
-        <button onClick={this.updateHandler(studentId)}>Update!</button>
+        <button onClick={()=>this.editHandler(id)}>Update!</button>
       </form>
     )
   }

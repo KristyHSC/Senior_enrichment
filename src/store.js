@@ -5,15 +5,14 @@ import axios from 'axios';
 const initialState = {
   campuses: [],
   students: [],
-  campus: [],
-  student: []
+  // campus: [],
+  // student: []
 }
 
 
 const SET_CAMPUSES = 'SEED_CAMPUSES'
 const SET_STUDENTS = 'SEED_STUDENTS'
-const SINGLE_CAMPUS = 'SINGLE_CAMPUS'
-const SINGLE_STUDENT = 'SINGLE_STUDENT'
+
 
 const setCampuses = (campuses) => ({
   type: SET_CAMPUSES,
@@ -25,15 +24,7 @@ const setStudents = (students) => ({
   students
 })
 
-const singleCampus = campus => ({
-  type: SINGLE_CAMPUS,
-  campus
-})
 
-const singleStudent = student => ({
-  type: SINGLE_STUDENT,
-  student
-})
 
 export const fetchCampuses = () => {
   return dispatch => {
@@ -49,19 +40,6 @@ export const fetchStudents = () => {
   }
 }
 
-export const returnACampus = (id) => {
-  return dispatch => {
-    axios.get(`/api/campuses/${id}`)
-      .then(campus => dispatch(singleCampus(campus.data)))
-  }
-}
-
-export const returnAStudent = id => {
-  return dispatch => {
-    axios.get(`/api/students/${id}`)
-      .then(user => dispatch(singleStudent(user.data)))
-  }
-}
 
 export const addCampus = (campus) => {
   return dispatch => {
@@ -73,6 +51,7 @@ export const addCampus = (campus) => {
 }
 
 export const addStudent = (student) => {
+  console.log(student)
   return dispatch => {
     axios.post(`/api/students`, student)
     .then(() => dispatch(fetchStudents()))
@@ -85,6 +64,7 @@ export const editStudent = (id, student) => {
   return dispatch => {
     axios.put(`/api/students/${id}`, student)
     .then(() => dispatch(fetchStudents()))
+    .then(() => console.log('edit successfully'))
     .catch(error => console.log("editStudent has error!", error))
   }
 }
@@ -109,10 +89,6 @@ const reducer = (state = initialState, action) => {
       return {...state, campuses: action.campuses}
     case SET_STUDENTS:
       return {...state, students: action.students}
-    case SINGLE_CAMPUS:
-      return {...state, campus: action.campus}
-    case SINGLE_STUDENT:
-      return {...state, student: action.student}
     default:
       return state
   }

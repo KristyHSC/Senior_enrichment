@@ -1,30 +1,20 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import {returnAStudent} from './store';
 import AddStudent from './AddStudent'
+import Axios from 'axios';
 
-const mapStateToProps = state => {
-  return {
-    student: state.student
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    returnAStudent: (id) => dispatch(returnAStudent(id))
-  }
-}
 
 class singleStudent extends Component {
   constructor(){
     super()
     this.state = {
+      student: {},
       edit: false
     }
   }
-  componentDidMount(){
+  componentWillMount(){
     const id = this.props.match.params.id
-    this.props.returnAStudent(id)
+    Axios.get(`/api/students/${id}`)
+      .then(student => this.setState({student: student.data}))
   }
 
   editStudent = () => {
@@ -32,7 +22,8 @@ class singleStudent extends Component {
   }
 
   render(){
-    const {student} = this.props
+    const {student} = this.state
+    console.log(student)
     if (this.state.edit) {
       return (
         <AddStudent  student = {student}/>
@@ -52,4 +43,4 @@ class singleStudent extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(singleStudent)
+export default singleStudent;

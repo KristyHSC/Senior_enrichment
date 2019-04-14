@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {fetchStudents, returnAStudent, destoryStudent, editStudent} from './store';
+import {fetchStudents, destoryStudent, editStudent} from './store';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => {
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     fetchStudents: () => dispatch(fetchStudents()),
     handleClick: (id) => dispatch(returnAStudent(id)),
     destoryStudent: (id) => dispatch(destoryStudent(id)),
-    editStudent: (id, student) => dispatch(editStudent(id, student))
+    //editStudent: (id, student) => dispatch(editStudent(id, student))
   }
 }
 
@@ -49,14 +49,9 @@ class Students extends Component {
       }, '')
   }
 
-  updateHandler = (id, student) => {
-    //console.log(id)
-    //console.log(student)
-    this.props.editStudent(id, student)
-  }
 
   render(){
-    const {students, campuses} = this.props
+    const {students} = this.props
     return (
       <div>
         <button>+</button>
@@ -64,13 +59,6 @@ class Students extends Component {
           <li key = {student.id}>
             <ul>{student.firstName} {student.lastName}</ul>
             <ul>Current Campus: {this. openStudent(student.id)}</ul>
-            <select onChange={this.onCampusChange}>
-              <option>Select a Campus</option>
-              {campuses.map(campus => (
-                <option key={campus.id}>{campus.name}</option>
-              ))}
-            </select>
-            <button onClick={this.updateHandler(student.id, student)}>Update Campus</button>
             <button onClick={() => this.clickHandle(student.id)}>View</button>
             <button onClick={() =>this.deleteClick(student.id)}>X</button>
           </li>
