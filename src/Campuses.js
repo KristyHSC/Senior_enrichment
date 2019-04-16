@@ -35,17 +35,19 @@ class Campuses extends Component {
   render(){
     const campuses = this.props.campuses
     return (
-      <div>
+      <div className="row justify-content-around">
         {campuses.map(campus => (
-          <li key={campus.id}>
-            {campus.name}
-            <button onClick = {() => this.clickHandle(campus.id)}>View Campus</button>
-            <button onClick={()=>this.deleteClick(campus.id)}> X </button>
-          </li>
+          <div id='eachCampus' key={campus.id}>
+          <p onClick= {() => this.clickHandle(campus.id)}>{campus.name}</p>
+          <button onClick={()=>this.deleteClick(campus.id)}> X </button>
+          <img src={campus.imageUrl} height={200} weight={200}/>
+          </div>
         ))}
       </div>
     )
   }
 }
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Campuses);

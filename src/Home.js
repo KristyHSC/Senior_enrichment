@@ -15,16 +15,24 @@ class Home extends Component {
     return openStudent.length
   }
   render(){
+    const {students, campuses} = this.props
     if (this.openStudents()>0){
       return (
         <div>
-          We have {this.openStudents()} open Students waiting for you to assign a campus. 
+          <p>
+            We have {this.openStudents()} open Students waiting for you to assign a campus. 
+          </p>
+          <p>
+          We have {campuses.length} Campuses and {students.length} Students.
+          </p>
         </div>
       )
     }
     return (
       <div>
-        All the students belong to a Campus.
+        <p>
+          We have {campuses.length} Campuses and {students.length} Students, and all students belong to a campus.
+        </p>
       </div>
     )
   }

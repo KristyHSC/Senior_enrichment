@@ -30,6 +30,7 @@ class AddStudent extends Component{
   componentWillMount(){
     if (this.props.student){
       this.setState(this.props.student)
+      console.log(this.state)
     }
   }
 
@@ -51,37 +52,37 @@ class AddStudent extends Component{
 
   onCampusChange = e => {
     const {campuses} = this.props
-    //console.log(campuses)
     const campus = campuses.reduce((acc, campus) => {
       if(campus.name === e.target.value){
         acc = campus
       }
       return acc
     }, {})
-    //console.log(campus)
     this.setState({campusId: campus.id})
   }
 
-  createHandler = () => {
-    let event = window.event 
+  createHandler = event => {
     event.preventDefault()
     const student = this.state
     this.props.addStudent(student)
+    window.alert(`New student ${student.name} is created.`)
+    window.location.href = 'http://localhost:3000/#/students'
   }
 
-  editHandler = (id) => {
-    let event = window.event
+  editHandler = (event) => {
     event.preventDefault()
-    const student = this.state.student
-    console.log(student)
-    //this.props.editStudent(id, student)
+    const student = this.state
+    const id = student.id
+    this.props.editStudent(id, student)
+    window.alert("Student info updated!")
+    window.location.href = 'http://localhost:3000/#/students'
   }
   
   render(){
     const {campuses} = this.props
-    if (this.props.student){const id = this.props.student.id}
+    // if (this.props.student){const id = this.props.student.id}
     return(
-      <form id='new-campus-form' >
+      <form id='new-campus-form' onSubmit={this.createHandler}>
         <div className='input-group'>
         <input 
           className="form-control"
@@ -111,8 +112,8 @@ class AddStudent extends Component{
           className="form-control"
           type="integer"
           name="GPA"
-          value = {this.state.gpa? this.state.email: "" }
-          placeholder={this.state.gpa? this.state.email: "GPA" }
+          value = {this.state.gpa? this.state.gpa: "" }
+          placeholder={this.state.gpa? this.state.gpa: "GPA" }
           onChange={this.onGPAChange}
         />
         <select onChange={this.onCampusChange}>
@@ -122,8 +123,8 @@ class AddStudent extends Component{
           ))}
         </select>
         </div>
-        <button onClick={this.createHandler}>Create!</button>
-        <button onClick={()=>this.editHandler(id)}>Update!</button>
+        <button type="submit">Create!</button>
+        <button onClick={this.editHandler}>Update!</button>
       </form>
     )
   }

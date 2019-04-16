@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import AddStudent from './AddStudent'
 import Axios from 'axios';
+import {connect} from 'react-redux';
 
+const mapStateToProps = state => {
+  return {
+    campuses: state.campuses
+  }
+}
 
 class singleStudent extends Component {
   constructor(){
@@ -23,6 +29,7 @@ class singleStudent extends Component {
 
   render(){
     const {student} = this.state
+    const {campuses} = this.props
     console.log(student)
     if (this.state.edit) {
       return (
@@ -31,16 +38,23 @@ class singleStudent extends Component {
     }
     return (
       <div>
+        <div className='nav'>
+        <h3>{student.firstName} {student.lastName}</h3>
         <button onClick={this.editStudent}>Edit</button>
-        <li>{student.firstName} {student.lastName}</li>
-        <ul>email: {student.email}</ul>
-        <ul>gpa: {student.gpa}</ul>
-        <ul>campusId: {student.campusId}</ul>
+        </div>
         <img src = {student.imageUrl} height={200} weight={200}/>
-
+        <p>email: {student.email}</p>
+        <p>gpa: {student.gpa}</p>
+        <p>Belong to Campus: {campuses.reduce((acc, campus) => {
+          if (campus.id === student.campusId){
+            acc = campus;
+          }
+          return acc;
+        }, {}).name}</p>
       </div>
     )
   }
 }
 
-export default singleStudent;
+export default connect(mapStateToProps)(singleStudent);
+

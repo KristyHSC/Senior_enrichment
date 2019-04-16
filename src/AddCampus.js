@@ -15,6 +15,7 @@ class AddCampus extends Component{
         name: '',
         address: '',
         description: '',
+        imageUrl: ''
     }  
 }
 
@@ -30,10 +31,16 @@ onDesChange = e => {
     this.setState({description: e.target.value})
 }
 
+onImgChange = e => {
+  this.setState({imageUrl: e.target.value})
+}
+
 submitHandler = event => {
     event.preventDefault()
     const campus = this.state
     this.props.addCampus(campus)
+    window.alert(`New Campus ${campus.name} is created.`)
+    window.location.href = 'http://localhost:3000/#/campuses'
 }
   render(){
     return(
@@ -59,6 +66,13 @@ submitHandler = event => {
           name="description"
           placeholder="description"
           onChange={this.onDesChange}
+        />
+        <input 
+          className="form-control"
+          type="text"
+          name="imageUrl"
+          placeholder="imageUrl"
+          onChange={this.onImgChange}
         />
         </div>
         <button type="submit">Create!</button>

@@ -26,16 +26,22 @@ const mapDispatchToProps = dispatch => {
 }
 
 class App extends Component {
-  componentDidMount(){
+  componentWillMount(){
     this.props.fetchCampuses()
     this.props.fetchStudents()
+  }
+
+  header = () => {
+    className(
+      
+    )
   }
 
   render(){
     return (
       <Router>
       <div>
-        <div className='header' >
+        <div>
           <h1>Campuses and Students</h1>
         </div>
         <Nav />

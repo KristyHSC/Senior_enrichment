@@ -16,12 +16,23 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     fetchStudents: () => dispatch(fetchStudents()),
     handleClick: (id) => dispatch(returnAStudent(id)),
     destoryStudent: (id) => dispatch(destoryStudent(id)),
-    //editStudent: (id, student) => dispatch(editStudent(id, student))
+    editStudent: (id, student) => dispatch(editStudent(id, student))
   }
 }
 
 
 class Students extends Component {
+  constructor (){
+    super()
+    this.state = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        gpa: 0,
+        campusId: null,
+    }
+  }
+
   componentWillMount(){
     this.props.fetchStudents()
   }
@@ -40,7 +51,7 @@ class Students extends Component {
     const student = students.reduce((acc, student) => {
       return student.id === id? acc=student : acc
     }, {})
-    return student.campusId === null? 'Null': 
+    return student.campusId === null? 'Does not belong to a campus': 
       campuses.reduce((acc, campus) => {
         if(campus.id === student.campusId){
           acc = campus.name
@@ -49,20 +60,68 @@ class Students extends Component {
       }, '')
   }
 
+  //why can't I set state?
+
+  onCampusChange = (id, e) => {
+    const {campuses, students} = this.props
+    const student = students.reduce((acc, astudent) => {
+      if (astudent.id === id){
+        acc = astudent
+      }
+      return acc
+    }, {})
+    console.log(student)
+    const campus = campuses.reduce((acc, acampus) => {
+      if(acampus.name === e.target.value){
+        acc = acampus
+      }
+      return acc;
+    }, {})
+    console.log(campus)
+    this.setState(student)
+    console.log(this.state)
+  }
+
+  editStudent = (event) => {
+    event.preventDefault()
+    const student = this.state
+    const id = student.id
+    this.props.editStudent(id, student)
+  }
+
+  addStudent = event => {
+    event.preventDefault()
+    const history = this.props.history
+    history.push('/student/create')
+  }
 
   render(){
-    const {students} = this.props
+    const {students, campuses} = this.props
     return (
       <div>
-        <button>+</button>
+        <button onClick={this.addStudent}>Add a student</button>
+        <div id="studentList" className="row justify-content-around" >
         {students.map(student => (
-          <li key = {student.id}>
-            <ul>{student.firstName} {student.lastName}</ul>
-            <ul>Current Campus: {this. openStudent(student.id)}</ul>
-            <button onClick={() => this.clickHandle(student.id)}>View</button>
-            <button onClick={() =>this.deleteClick(student.id)}>X</button>
-          </li>
+          <div key = {student.id}>
+            <h3 onClick={()=> this.clickHandle(student.id)}>
+              {student.firstName} {student.lastName}
+            </h3>
+            <p>Current Campus: {this.openStudent(student.id)}</p>
+            <img src={student.imageUrl} height={100} weight={100} />
+            <div id='selection'> 
+              <select onChange = {(e) => this.onCampusChange(student.id, e)}>
+                <option>none</option>
+                {campuses.map(campus => (
+                  <option key={campus.id}>{campus.name}</option>
+                ))}
+              </select>
+              <button onClick = {this.editStudent}>Assign campus</button>
+              <button onClick={() =>this.deleteClick(student.id)}>Delete Student</button> 
+            </div>
+            <p>-----------------</p>
+            </div>
         ))}
+        </div>
       </div>
     )
   }

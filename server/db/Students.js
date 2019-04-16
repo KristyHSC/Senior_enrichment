@@ -31,7 +31,7 @@ const Student = conn.define('student', {
     },
     imageUrl: {
       type: Sequelize.STRING,
-      defaultValue: "http://lorempixel.com/640/480/people"
+      defaultValue: "https://media1.tenor.com/images/c8c37be4b0cf7a4e1253a24f9029b723/tenor.gif?itemid=8217376"
     },
     gpa: {
       type: Sequelize.FLOAT(2),
