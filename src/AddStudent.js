@@ -62,20 +62,23 @@ class AddStudent extends Component{
   }
 
   createHandler = event => {
+    const history = this.props.history
     event.preventDefault()
     const student = this.state
     this.props.addStudent(student)
     window.alert(`New student ${student.name} is created.`)
-    window.location.href = 'http://localhost:3000/#/students'
+    history.push('/students')
   }
 
   editHandler = (event) => {
+    const history = this.props.history
     event.preventDefault()
     const student = this.state
     const id = student.id
     this.props.editStudent(id, student)
     window.alert("Student info updated!")
-    window.location.href = 'http://localhost:3000/#/students'
+    history.push(`/students/${id}`)
+    //why my history is not pushing?
   }
   
   render(){

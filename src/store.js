@@ -28,14 +28,14 @@ const setStudents = (students) => ({
 
 export const fetchCampuses = () => {
   return dispatch => {
-    axios.get('/api/campuses')
+    return axios.get('/api/campuses')
       .then(campus => dispatch(setCampuses((campus.data))))
   }
 }
 
 export const fetchStudents = () => {
   return dispatch => {
-    axios.get('/api/students')
+    return axios.get('/api/students')
       .then(users => dispatch(setStudents(users.data)))
   }
 }
@@ -43,7 +43,7 @@ export const fetchStudents = () => {
 
 export const addCampus = (campus) => {
   return dispatch => {
-    axios.post(`/api/campuses`, campus)
+    return axios.post(`/api/campuses`, campus)
     .then(() => dispatch(fetchCampuses()))
     .then(() => console.log("Campus post successfully"))
     .catch(error => console.log("addCampus has error!", error))
@@ -53,7 +53,7 @@ export const addCampus = (campus) => {
 export const addStudent = (student) => {
   console.log(student)
   return dispatch => {
-    axios.post(`/api/students`, student)
+    return axios.post(`/api/students`, student)
     .then(() => dispatch(fetchStudents()))
     .then(() => console.log("Student post successfully"))
     .catch(error => console.log("addStudent has error!", error))
@@ -62,23 +62,23 @@ export const addStudent = (student) => {
 
 export const editStudent = (id, student) => {
   return dispatch => {
-    axios.put(`/api/students/${id}`, student)
+    return axios.put(`/api/students/${id}`, student)
     .then(() => dispatch(fetchStudents()))
     .then(() => console.log('edit successfully'))
-    .catch(error => console.log("editStudent has error!", error))
+    // .catch(error => console.log("editStudent has error!", error))
   }
 }
 
 export const destoryCampus = id => {
   return dispatch => {
-    axios.delete(`/api/campuses/${id}`)
+    return axios.delete(`/api/campuses/${id}`)
       .then(() => dispatch(fetchCampuses()))
   }
 }
 
 export const destoryStudent = id => {
   return dispatch => {
-    axios.delete(`/api/students/${id}`)
+    return axios.delete(`/api/students/${id}`)
       .then(() => dispatch(fetchStudents()))
   }
 }

@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
 import Axios from 'axios';
+import {connect} from 'react-redux';
 
-
+const mapStateToProps = state => {
+  return {
+    students: state.students
+  }
+}
 
 class singleCampus extends Component {
   constructor(){
@@ -20,16 +25,24 @@ class singleCampus extends Component {
 
   render(){
     const {campus} = this.state
+    const {students} = this.props
+    const campusStudents = students.filter(student => student.campusId === campus.id)
     return (
       <div>
-        <li>{campus.name}</li>
-        <ul>address: {campus.address}</ul>
-        <ul>description: {campus.description}</ul>
+        <h4>{campus.name}</h4>
         <img src = {campus.imageUrl} height={200} weight={200}/>
+        <p>address: {campus.address}</p>
+        <p>description: {campus.description}</p>
+        <div>
+          <p>This campus has the following students: </p>
+          {campusStudents.map(student => (
+            <li key={student.id}>{student.firstName} {student.lastName}</li>
+          ))}
+        </div>
         {/* <AddStudent /> */}
       </div>
     )
   }
 }
 
-export default singleCampus;
+export default connect(mapStateToProps)(singleCampus);

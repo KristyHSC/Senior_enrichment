@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {fetchStudents, destoryStudent, editStudent} from './store';
+import {destoryStudent, editStudent} from './store';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => {
@@ -10,10 +10,8 @@ const mapStateToProps = state => {
 }
 
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const history = ownProps.history
+const mapDispatchToProps = (dispatch) => {
   return {
-    fetchStudents: () => dispatch(fetchStudents()),
     handleClick: (id) => dispatch(returnAStudent(id)),
     destoryStudent: (id) => dispatch(destoryStudent(id)),
     editStudent: (id, student) => dispatch(editStudent(id, student))
@@ -31,10 +29,6 @@ class Students extends Component {
         gpa: 0,
         campusId: null,
     }
-  }
-
-  componentWillMount(){
-    this.props.fetchStudents()
   }
 
   clickHandle = id => {
@@ -70,23 +64,31 @@ class Students extends Component {
       }
       return acc
     }, {})
-    console.log(student)
+    this.setState(student)
     const campus = campuses.reduce((acc, acampus) => {
       if(acampus.name === e.target.value){
         acc = acampus
       }
       return acc;
     }, {})
-    console.log(campus)
-    this.setState(student)
-    console.log(this.state)
+    this.setState({campusId: campus.id})
   }
 
   editStudent = (event) => {
     event.preventDefault()
     const student = this.state
+    const campuses = this.props.campuses
+    const campus = campuses.reduce((acc, campus) => {
+      if(campus.id === student.campusId){
+        acc = campus
+      }
+      return acc
+    }, {})
     const id = student.id
     this.props.editStudent(id, student)
+    console.log(this.state)
+    window.alert(`Student ${student.firstName} ${student.lastName} is now assign to ${campus.name}`)
+    location.reload()
   }
 
   addStudent = event => {

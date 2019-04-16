@@ -14,7 +14,9 @@ app.get('/app.js', (req, res, next)=> res.sendFile(path.join(__dirname, 'dist', 
 app.get('/', (req, res, next)=> res.sendFile(path.join(__dirname, 'index.html')));
 
 app.get('/api/students', (req, res, next) => {
-  Student.findAll()
+  Student.findAll({
+    order: [['firstName', 'ASC'], ['lastName', 'ASC']]
+  })
     .then(students => res.send(students))
 })
 

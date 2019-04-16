@@ -32,17 +32,26 @@ class Campuses extends Component {
     this.props.destoryCampus(id)
   }
 
+  addCampus = event => {
+    event.preventDefault()
+    const {history} = this.props
+    history.push('/campus/create')
+  }
+
   render(){
     const campuses = this.props.campuses
     return (
-      <div className="row justify-content-around">
-        {campuses.map(campus => (
-          <div id='eachCampus' key={campus.id}>
-          <p onClick= {() => this.clickHandle(campus.id)}>{campus.name}</p>
-          <button onClick={()=>this.deleteClick(campus.id)}> X </button>
-          <img src={campus.imageUrl} height={200} weight={200}/>
-          </div>
-        ))}
+      <div>
+        <button onClick={this.addCampus}>Add a Campus</button>
+        <div className="row justify-content-around">
+          {campuses.map(campus => (
+            <div id='eachCampus' key={campus.id}>
+            <p onClick= {() => this.clickHandle(campus.id)}>{campus.name}</p>
+            <button onClick={()=>this.deleteClick(campus.id)}> Delete Campus </button>
+            <img src={campus.imageUrl} height={200} weight={200}/>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }

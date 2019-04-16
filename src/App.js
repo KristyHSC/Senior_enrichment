@@ -36,7 +36,7 @@ class App extends Component {
     return (
       <Router>
       <div>
-        <div className="header">
+        <div>
           <h1>Campuses and Students</h1>
         </div>
         <Nav />
