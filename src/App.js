@@ -31,17 +31,12 @@ class App extends Component {
     this.props.fetchStudents()
   }
 
-  header = () => {
-    className(
-      
-    )
-  }
 
   render(){
     return (
       <Router>
       <div>
-        <div>
+        <div className="header">
           <h1>Campuses and Students</h1>
         </div>
         <Nav />

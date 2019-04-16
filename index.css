@@ -1,0 +1,9 @@
+.header {
+  display: flex;
+  background-color: pink;
+
+}
+
+#header {
+  background-color: blue;
+}
