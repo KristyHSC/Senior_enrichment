@@ -8,10 +8,10 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, {history}) => {
   return {
-    addStudent: (campus) => dispatch(addStudent(campus)),
-    editStudent: (id, student) => dispatch(editStudent(id, student))
+    addStudent: (campus) => {dispatch(addStudent(campus, history))},
+    editStudent: (id, student, History) => {dispatch(editStudent(id, student, History))}
   }
 }
 
@@ -28,32 +28,32 @@ class AddStudent extends Component{
   }
 
   componentWillMount(){
-    if (this.props.student){
-      this.setState(this.props.student)
-      console.log(this.state)
+    const {student} = this.props
+    if (student){
+      this.setState(student)
     }
   }
 
-  onFNameChange = e => {
+  onfirstNameChange = e => {
     this.setState({firstName: e.target.value})
   }
 
-  onLNameChange = e => {
+  onlastNameChange = e => {
     this.setState({lastName: e.target.value})
   }
 
-  onEmailChange = e => {
+  onemailChange = e => {
     this.setState({email: e.target.value})
   }
 
-  onGPAChange = e => {
+  ongpaChange = e => {
     this.setState({gpa: e.target.value})
   }
 
   onCampusChange = e => {
     const {campuses} = this.props
     const campus = campuses.reduce((acc, campus) => {
-      if(campus.name === e.target.value){
+      if (campus.name === e.target.value){
         acc = campus
       }
       return acc
@@ -62,23 +62,25 @@ class AddStudent extends Component{
   }
 
   createHandler = event => {
-    const history = this.props.history
+    // const {history} = this.props
+    console.log("create:", history)
     event.preventDefault()
     const student = this.state
-    this.props.addStudent(student)
-    window.alert(`New student ${student.name} is created.`)
-    history.push('/students')
+    this.props.addStudent(student, history)
   }
 
-  editHandler = (event) => {
-    const history = this.props.history
+  editHandler = event => {
+    console.log(this.props)
     event.preventDefault()
+    const {history} = this.props
     const student = this.state
     const id = student.id
-    this.props.editStudent(id, student)
-    window.alert("Student info updated!")
-    history.push(`/students/${id}`)
-    //why my history is not pushing?
+    this.props.editStudent(id, student, history)
+    //Q: why my history is not pushing? 
+    /*A: Unlike createHandler, editHandler is called when a student's info
+    is pass down from SingleStudent component, therefore, if we want to use 
+    history, we will have to pass down the history.  
+    */
   }
   
   render(){
@@ -87,13 +89,23 @@ class AddStudent extends Component{
     return(
       <form id='new-campus-form' onSubmit={this.createHandler}>
         <div className='input-group'>
+        {/* {Object.keys(this.state).map(key => (
+          <input 
+          className="form-control"
+          type="text"
+          name="firstName"
+          value = {this.state.key? this.state.key: key.toString() }
+          placeholder={this.state.key? this.state.key: key.toString() }
+          onChange={this.on`${key}`Change}
+        />
+        ))} */}
         <input 
           className="form-control"
           type="text"
           name="firstName"
           value = {this.state.firstName? this.state.firstName: "" }
           placeholder={this.state.firstName? this.state.firstName: "firstName" }
-          onChange={this.onFNameChange}
+          onChange={this.onfirstNameChange}
         />
         <input 
           className="form-control"
@@ -101,7 +113,7 @@ class AddStudent extends Component{
           name="lastName"
           value = {this.state.lastName? this.state.lastName: "" }
           placeholder={this.state.lastName? this.state.lastName: "lastName" }
-          onChange={this.onLNameChange}
+          onChange={this.onlastNameChange}
         />
         <input 
           className="form-control"
@@ -109,7 +121,7 @@ class AddStudent extends Component{
           name="email"
           value = {this.state.email? this.state.email: "" }
           placeholder={this.state.email? this.state.email: "Email" }
-          onChange={this.onEmailChange}
+          onChange={this.onemailChange}
         />
         <input 
           className="form-control"
@@ -117,7 +129,7 @@ class AddStudent extends Component{
           name="GPA"
           value = {this.state.gpa? this.state.gpa: "" }
           placeholder={this.state.gpa? this.state.gpa: "GPA" }
-          onChange={this.onGPAChange}
+          onChange={this.ongpaChange}
         />
         <select onChange={this.onCampusChange}>
           <option>Select a Campus</option>

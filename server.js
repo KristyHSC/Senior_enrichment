@@ -63,7 +63,7 @@ app.delete('/api/campuses/:id', (req, res, next) => {
 
 app.put('/api/students/:id', (req, res, next) => {
   Student.update(req.body, {where: {id: req.params.id}})
-    .then(() => console.log('student updated'))
+    .then(() => res.sendStatus(204))
     .catch(next)
 })
 

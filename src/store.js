@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
@@ -50,12 +50,13 @@ export const addCampus = (campus) => {
   }
 }
 
-export const addStudent = (student) => {
-  console.log(student)
+export const addStudent = (student, history) => {
   return dispatch => {
     return axios.post(`/api/students`, student)
     .then(() => dispatch(fetchStudents()))
-    .then(() => console.log("Student post successfully"))
+    .then(() => window.alert(`New student ${student.firstName} is created.`))
+    .then(() => console.log(history))
+    .then(() => history.push('/students'))
     .catch(error => console.log("addStudent has error!", error))
   }
 }
@@ -64,7 +65,9 @@ export const editStudent = (id, student) => {
   return dispatch => {
     return axios.put(`/api/students/${id}`, student)
     .then(() => dispatch(fetchStudents()))
-    .then(() => console.log('edit successfully'))
+    .then(() => window.alert(`Student ${student.firstName}'s info updated!`))
+    .then(() => location.reload())
+    //.then(() => history.reload(`/students/${id}`))
     // .catch(error => console.log("editStudent has error!", error))
   }
 }

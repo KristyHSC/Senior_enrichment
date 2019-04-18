@@ -29,11 +29,10 @@ class singleStudent extends Component {
 
   render(){
     const {student} = this.state
-    const {campuses} = this.props
-    console.log(student)
+    const {campuses, history} = this.props
     if (this.state.edit) {
       return (
-        <AddStudent  student = {student}/>
+        <AddStudent  student = {student} history = {history}/>
       )
     }
     return (
